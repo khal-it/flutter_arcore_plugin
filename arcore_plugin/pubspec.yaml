@@ -1,8 +1,8 @@
 name: arcore_plugin
 description: A new Flutter plugin.
 version: 0.0.1
-author: Khalit Hartmann
-homepage: 
+author: Khalit Hartmann <khalithartmann@gmail.com>
+homepage: https://github.com/khalithartmann/flutter_arcore_plugin
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"

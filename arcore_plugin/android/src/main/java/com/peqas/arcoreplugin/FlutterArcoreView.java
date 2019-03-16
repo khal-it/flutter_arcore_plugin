@@ -76,7 +76,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
     private double _tick = 0;
     private int recognized_image_index = -1;
     private boolean activity_paused = false;
-    private BinaryMessenger image_recognition_messenger;
     private boolean recognize_images = true;
 
 
@@ -86,7 +85,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
         methodChannel = new MethodChannel(messenger, "plugins.peqas.com/arcore_plugin_" + id);
         methodChannel.setMethodCallHandler(this);
         displayRotationHelper = new DisplayRotationHelper(/*context=*/ context);
-        image_recognition_messenger = messenger;
 
 
         // Set up renderer.
@@ -196,7 +194,7 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
 
                 // create new Session
                 this.session = new Session(activity);
-                Log.i(TAG, "Session created man");
+                Log.i(TAG, "Session created ");
 
             } catch (UnavailableUserDeclinedInstallationException e) {
                 message = "Please install ARCore";
@@ -221,7 +219,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
 
         if (shouldConfigureSession) {
             configureSession();
-            Log.i(TAG, "i got out of here! wow.");
             shouldConfigureSession = false;
         }
         // Note that order matters - see the note in onPause(), the reverse applies here.
