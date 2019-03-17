@@ -342,7 +342,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
                     // When an image is in PAUSED state, but the camera is not PAUSED, it has been detected,
                     // but not yet tracked.
                     methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
-                    recognize_images = false;
                     augmentedImageMap.clear();
 
 
@@ -350,7 +349,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
 
                 case TRACKING:
                     methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
-                    recognize_images = false;
                     augmentedImageMap.clear();
 
 
@@ -358,7 +356,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
 
                 case STOPPED:
                     augmentedImageMap.clear();
-                    recognize_images = false;
                     methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
                     break;
 
@@ -376,14 +373,12 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
             result.success(null);
         }
         if (methodCall.method.equals("resume_image_recognition")) {
-            System.out.println("android: image recognition resumed ");
+            System.out.println("arcore_plugin: resuming image recognition");
             recognize_images = true;
         }
         if (methodCall.method.equals("pauseImageRecognition")) {
-            System.out.println("android: need to stop image recognition!!!!!");
+            System.out.println("arcore_plugin: pausing image recognition");
             recognize_images = false;
-            System.out.println("recognize_images = ");
-            System.out.println(recognize_images);
         }
 
     }

@@ -35,24 +35,36 @@ android {
     * AS FOR NOW THE PLUGIN DOES NOT SUPPORT IN APP TRAINING OF THE IMGDB FILE
     * The IMGDB File has to be PRETRAINED and saved in a Temp Directory before the ArCoreView is created 
     * The IMGDB File name hast to be image_database.imgdb
+     * you can find a pretained imgdb file under example/assets. The images that the imgdb file is trained with are found under example/assets/tester_images
     * for more info about ARCore imgdb files see : https://developers.google.com/ar/develop/c/augmented-images/arcoreimg
+   
+
+
+## Getting Started 
+-  For the given Example you have to have a pretrained imgdb saved in your assets folder and added as an asset in your pubspec.yaml file !
 
 ```
-final Directory systemTempDir = Directory.systemTemp;
-final File tempFile = File('${systemTempDir.path}/image_database.imgdb');
-
-// create tempfile
-await tempFile.create();
-
-// TODO save content of imgdb in tempfile 
-```
-
-## Example 
-```
+import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:arcore_plugin/arcore_plugin.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: TextViewExample()));
+void main() async {
+  final Directory systemTempDir = Directory.systemTemp;
+  final File tempFile = File('${systemTempDir.path}/image_database.imgdb');
+
+  // create tempfile
+  await tempFile.create();
+
+  rootBundle.load("assets/image_database.imgdb").then((data) {
+    tempFile.writeAsBytesSync(
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+
+    runApp(MaterialApp(home: TextViewExample()));
+  }).catchError((error) {
+    throw Exception(error);
+  });
+}
 
 class TextViewExample extends StatefulWidget {
   @override
@@ -60,6 +72,8 @@ class TextViewExample extends StatefulWidget {
 }
 
 class _TextViewExampleState extends State<TextViewExample> {
+  String recongizedImage;
+  ArCoreViewController arCoreViewController;
 
   @override
   void initState() {
@@ -81,12 +95,21 @@ class _TextViewExampleState extends State<TextViewExample> {
                 width: screenSize.width,
                 height: screenSize.height,
                 child: ArCoreView(
+                  onImageRecognized: _onImageRecognized,
                   onArCoreViewCreated: _onTextViewCreated,
                 ))));
   }
 
   void _onTextViewCreated(ArCoreViewController controller) {
+    arCoreViewController = controller;
     controller.getArCoreView();
+  }
+
+  void _onImageRecognized(String recImgName) {
+    print("image recongized: $recImgName");
+
+    // you can pause the image recognition via arCoreViewController.pauseImageRecognition();
+    // resume it via arCoreViewController.resumeImageRecognition();
   }
 }
 
