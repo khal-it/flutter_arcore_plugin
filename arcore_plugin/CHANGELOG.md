@@ -13,6 +13,10 @@
 * Added pretrained imgdb file and tester images as asset for example 
 * updated README.md
 
-## 0.0.1+4
+## 0.1.0
 
 * ArCore is now optional not required.
+
+## 0.1.1 
+
+* upgrade to ARCore version 1.8.0

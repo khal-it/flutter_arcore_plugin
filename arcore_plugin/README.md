@@ -1,6 +1,7 @@
 # arcore_plugin
 
 A Flutter plugin for Android allowing to recongize images via ARCore 
+* USES ARCore version 1.8.0
 
 ## Features 
  ### [x] Displaying live ARCamera Feed 
@@ -48,8 +49,14 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:arcore_plugin/arcore_plugin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 
 void main() async {
+  SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.portraitUp,
+  ]);
   final Directory systemTempDir = Directory.systemTemp;
   final File tempFile = File('${systemTempDir.path}/image_database.imgdb');
 
