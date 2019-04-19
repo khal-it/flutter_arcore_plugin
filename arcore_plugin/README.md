@@ -54,8 +54,8 @@ import 'package:flutter/services.dart';
 
 void main() async {
   SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
   ]);
   final Directory systemTempDir = Directory.systemTemp;
   final File tempFile = File('${systemTempDir.path}/image_database.imgdb');
@@ -98,13 +98,18 @@ class _TextViewExampleState extends State<TextViewExample> {
           centerTitle: true,
         ),
         body: Center(
-            child: Container(
-                width: screenSize.width,
-                height: screenSize.height,
-                child: ArCoreView(
-                  onImageRecognized: _onImageRecognized,
-                  onArCoreViewCreated: _onTextViewCreated,
-                ))));
+            child: ArCoreView(
+          focusBox: Container(
+            width: screenSize.width * 0.5,
+            height: screenSize.width * 0.5,
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, style: BorderStyle.solid)),
+          ),
+          width: screenSize.width,
+          height: screenSize.height,
+          onImageRecognized: _onImageRecognized,
+          onArCoreViewCreated: _onTextViewCreated,
+        )));
   }
 
   void _onTextViewCreated(ArCoreViewController controller) {
@@ -119,6 +124,7 @@ class _TextViewExampleState extends State<TextViewExample> {
     // resume it via arCoreViewController.resumeImageRecognition();
   }
 }
+
 
 ```
 

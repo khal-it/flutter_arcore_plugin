@@ -20,3 +20,9 @@
 ## 0.1.1 
 
 * upgrade to ARCore version 1.8.0
+
+## 0.1.2
+
+* added width, height, focusBox parameters (all optional)
+- width : width of arcore view (Default value 300)
+- height: height of arcore view (Default value 300)

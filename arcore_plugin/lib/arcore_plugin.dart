@@ -6,10 +6,19 @@ import 'package:flutter/services.dart';
 typedef void ArCoreViewCreatedCallback(ArCoreViewController controller);
 
 class ArCoreView extends StatefulWidget {
+  final double width;
+  final double height;
   final Function onImageRecognized;
   final ArCoreViewCreatedCallback onArCoreViewCreated;
+  final Widget focusBox;
 
-  const ArCoreView({Key key, this.onArCoreViewCreated, this.onImageRecognized})
+  const ArCoreView(
+      {Key key,
+      this.onArCoreViewCreated,
+      this.onImageRecognized,
+      this.width = 300,
+      this.height = 300,
+      this.focusBox})
       : super(key: key);
 
   @override
@@ -26,10 +35,19 @@ class _ArCoreViewState extends State<ArCoreView> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return AndroidView(
-        viewType: 'plugins.peqas.com/arcore_plugin',
-        onPlatformViewCreated: _onPlatformViewCreated,
-      );
+      return Container(
+          width: widget.width,
+          height: widget.height,
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              AndroidView(
+                viewType: 'plugins.peqas.com/arcore_plugin',
+                onPlatformViewCreated: _onPlatformViewCreated,
+              ),
+              widget.focusBox != null ? widget.focusBox : Container()
+            ],
+          ));
     }
     return Text(
         '$defaultTargetPlatform is not  supported by the ar_view plugin');

@@ -1,6 +1,6 @@
 name: arcore_plugin
 description: A new Flutter plugin that allows you to integrate ARCore functionlaity into youre app 
-version: 0.1.1
+version: 0.1.2
 author: Khalit Hartmann <khalithartmann@gmail.com>
 homepage: https://github.com/khalithartmann/flutter_arcore_plugin
 
@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  pedantic: ^1.4.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -23,6 +25,7 @@ flutter:
   plugin:
     androidPackage: com.peqas.arcoreplugin
     pluginClass: ArcorePlugin
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
