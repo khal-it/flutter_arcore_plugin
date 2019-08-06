@@ -20,7 +20,7 @@ A Flutter plugin for Android allowing to recongize images via ARCore
 ```
  defaultConfig {
         ...     
-        minSdkVersion 14
+        minSdkVersion 24
         ...
     }
 ```
