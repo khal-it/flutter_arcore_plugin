@@ -41,16 +41,19 @@ public final class DisplayRotationHelper implements DisplayListener {
    */
   public DisplayRotationHelper(Context context) {
     this.context = context;
+    // FIXME! This will break in APIs below 23
     display = context.getSystemService(WindowManager.class).getDefaultDisplay();
   }
 
   /** Registers the display listener. Should be called from {@link Activity#onResume()}. */
   public void onResume() {
+    // FIXME! This will break in APIs below 23
     context.getSystemService(DisplayManager.class).registerDisplayListener(this, null);
   }
 
   /** Unregisters the display listener. Should be called from {@link Activity#onPause()}. */
   public void onPause() {
+    // FIXME! This will break in APIs below 23
     context.getSystemService(DisplayManager.class).unregisterDisplayListener(this);
   }
 
