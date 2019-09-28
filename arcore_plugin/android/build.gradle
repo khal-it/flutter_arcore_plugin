@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
 
     }
 }
@@ -31,11 +31,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 14
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     lintOptions {
@@ -43,10 +43,10 @@ android {
     }
 }
 dependencies {
-    api 'com.google.ar:core:1.8.0'
-    api 'com.android.support:appcompat-v7:27.1.1'
-    api 'com.github.bumptech.glide:glide:4.6.1'
-    api 'com.android.support:design:27.1.1'
+    api 'com.google.ar:core:1.11.0'
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'com.github.bumptech.glide:glide:4.9.0'
+    api 'com.google.android.material:material:1.0.0'
 
 
 

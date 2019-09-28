@@ -94,7 +94,7 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
         surfaceView.setRenderer(this);
         surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
-
+        final Application application = ((Application) context.getApplicationContext());
         this.activityLifecycleCallbacks =
                 new Application.ActivityLifecycleCallbacks() {
                     @Override
@@ -128,11 +128,12 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
 
                     @Override
                     public void onActivityDestroyed(Activity activity) {
+                        application.unregisterActivityLifecycleCallbacks(this);
                     }
                 };
 
-        ((FlutterApplication) context.getApplicationContext()).getCurrentActivity().getApplication()
-                .registerActivityLifecycleCallbacks(this.activityLifecycleCallbacks);
+
+        application.registerActivityLifecycleCallbacks(this.activityLifecycleCallbacks);
 
         installRequested = false;
 
@@ -173,7 +174,6 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
     protected void _onResume() {
 
         if (session == null) {
-            Exception exception = null;
             String message = null;
             try {
 
@@ -198,13 +198,10 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
 
             } catch (UnavailableUserDeclinedInstallationException e) {
                 message = "Please install ARCore";
-                exception = e;
             } catch (UnavailableDeviceNotCompatibleException e) {
                 message = "This device does not support AR";
-                exception = e;
             } catch (Exception e) {
                 message = "Failed to create AR session";
-                exception = e;
             }
             if (message != null) {
 
@@ -407,6 +404,7 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
         // load a pre-existing augmented image database.
         File imgDBFile = new File(activity.getCacheDir(), "image_database.imgdb");
 
+        // FIXME: This will break in APIs BELOW 19!!
         try (InputStream is = new FileInputStream(imgDBFile)) {
             augmentedImageDatabase = AugmentedImageDatabase.deserialize(session, is);
         } catch (Exception e) {
