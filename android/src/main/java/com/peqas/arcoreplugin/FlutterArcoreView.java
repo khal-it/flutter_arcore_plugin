@@ -8,12 +8,13 @@ import android.content.pm.PackageManager;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.RequestManager;
 import com.google.ar.core.Anchor;
@@ -332,28 +333,40 @@ public class FlutterArcoreView implements PlatformView, MethodChannel.MethodCall
                 frame.getUpdatedTrackables(AugmentedImage.class);
 
         // Iterate to update augmentedImageMap, remove elements we cannot draw.
-        for (AugmentedImage augmentedImage : updatedAugmentedImages) {
+        for (final AugmentedImage augmentedImage : updatedAugmentedImages) {
             switch (augmentedImage.getTrackingState()) {
                 case PAUSED:
 
                     // When an image is in PAUSED state, but the camera is not PAUSED, it has been detected,
                     // but not yet tracked.
-                    methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
-                    augmentedImageMap.clear();
-
-
-                    recognized_image_index = augmentedImage.getIndex();
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
+                            augmentedImageMap.clear();
+                            recognized_image_index = augmentedImage.getIndex();
+                        }
+                    });
 
                 case TRACKING:
-                    methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
-                    augmentedImageMap.clear();
-
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
+                            augmentedImageMap.clear();
+                        }
+                    });
 
                     break;
 
                 case STOPPED:
-                    augmentedImageMap.clear();
-                    methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            augmentedImageMap.clear();
+                            methodChannel.invokeMethod("image_recognized", augmentedImage.getName());
+                        }
+                    });
                     break;
 
                 default:
