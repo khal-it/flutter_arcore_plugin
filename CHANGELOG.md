@@ -26,3 +26,10 @@
 * added width, height, focusBox parameters (all optional)
 - width : width of arcore view (Default value 300)
 - height: height of arcore view (Default value 300)
+
+
+## 0.1.4
+- Fixed image db file path
+- Fixed main thread issue in FlutterArcoreView
+- Toast message for recognized image
+BIG THANKS to Ilya Bershadskyi for contributing!
