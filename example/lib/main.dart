@@ -3,19 +3,20 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:arcore_plugin/arcore_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() async {
-  SystemChrome.setPreferredOrientations([
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  final Directory systemTempDir = Directory.systemTemp;
-  final File tempFile = File('${systemTempDir.path}/image_database.imgdb');
+  //final Directory systemTempDir = Directory.systemTemp;
+  //final File tempFile = File('${systemTempDir.path}/image_database.imgdb'); TODO use dynamic
+  final File tempFile = File('/data/user/0/com.peqas.arcorepluginexample/cache/image_database.imgdb');
 
   // create tempfile
   await tempFile.create();
-
-  rootBundle.load("assets/image_database.imgdb").then((data) {
+  await rootBundle.load("assets/image_database.imgdb").then((data) {
     tempFile.writeAsBytesSync(
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
@@ -71,8 +72,20 @@ class _TextViewExampleState extends State<TextViewExample> {
 
   void _onImageRecognized(String recImgName) {
     print("image recongized: $recImgName");
+    _showToast("image recongized: $recImgName");
 
     // you can pause the image recognition via arCoreViewController.pauseImageRecognition();
     // resume it via arCoreViewController.resumeImageRecognition();
+  }
+
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 20.0);
   }
 }
