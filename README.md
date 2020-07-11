@@ -11,7 +11,7 @@ A Flutter plugin for Android allowing to recongize images via ARCore
 
 
 
-## Installation 
+## Installation
 
 ### Android 
 * For Setup make sure you migrated your App to AndroidX 
@@ -53,6 +53,7 @@ import 'package:flutter/services.dart';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,

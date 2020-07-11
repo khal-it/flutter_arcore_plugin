@@ -6,13 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
   //final Directory systemTempDir = Directory.systemTemp;
   //final File tempFile = File('${systemTempDir.path}/image_database.imgdb'); TODO use dynamic
-  final File tempFile = File('/data/user/0/com.peqas.arcorepluginexample/cache/image_database.imgdb');
+  final File tempFile = File(
+      '/data/user/0/com.peqas.arcorepluginexample/cache/image_database.imgdb');
 
   // create tempfile
   await tempFile.create();
