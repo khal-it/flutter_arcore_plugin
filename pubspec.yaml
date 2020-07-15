@@ -1,6 +1,6 @@
 name: arcore_plugin
 description: A new Flutter plugin that allows you to integrate ARCore functionlaity into youre app 
-version: 0.1.4
+version: 0.2.0
 homepage: https://github.com/khalithartmann/flutter_arcore_plugin
 
 environment:
