@@ -33,3 +33,8 @@
 - Fixed main thread issue in FlutterArcoreView
 - Toast message for recognized image
 BIG THANKS to Ilya Bershadskyi for contributing!
+
+## 0.2.0
+- added loadImgdbFromAssets to API 
+- refactored code
+- fix example code 
