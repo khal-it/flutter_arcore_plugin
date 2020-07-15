@@ -1,37 +1,26 @@
-import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async';
+
 import 'package:arcore_plugin/arcore_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void main() async {
-  await SystemChrome.setPreferredOrientations([
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  //final Directory systemTempDir = Directory.systemTemp;
-  //final File tempFile = File('${systemTempDir.path}/image_database.imgdb'); TODO use dynamic
-  final File tempFile = File('/data/user/0/com.peqas.arcorepluginexample/cache/image_database.imgdb');
 
-  // create tempfile
-  await tempFile.create();
-  await rootBundle.load("assets/image_database.imgdb").then((data) {
-    tempFile.writeAsBytesSync(
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-
-    runApp(MaterialApp(home: TextViewExample()));
-  }).catchError((error) {
-    throw Exception(error);
-  });
+  runApp(MaterialApp(home: ImageRecognitionApp()));
 }
 
-class TextViewExample extends StatefulWidget {
+class ImageRecognitionApp extends StatefulWidget {
   @override
-  _TextViewExampleState createState() => _TextViewExampleState();
+  _ImageRecognitionAppState createState() => _ImageRecognitionAppState();
 }
 
-class _TextViewExampleState extends State<TextViewExample> {
+class _ImageRecognitionAppState extends State<ImageRecognitionApp> {
   String recongizedImage;
   ArCoreViewController arCoreViewController;
 
@@ -42,7 +31,7 @@ class _TextViewExampleState extends State<TextViewExample> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.blue,
         appBar: AppBar(
@@ -61,18 +50,21 @@ class _TextViewExampleState extends State<TextViewExample> {
           width: screenSize.width,
           height: screenSize.height,
           onImageRecognized: _onImageRecognized,
-          onArCoreViewCreated: _onTextViewCreated,
+          onArCoreViewCreated: _onArCoreViewCreated,
         )));
   }
 
-  void _onTextViewCreated(ArCoreViewController controller) {
+  Future<void> _onArCoreViewCreated(ArCoreViewController controller) async {
     arCoreViewController = controller;
-    controller.getArCoreView();
+    await arCoreViewController.loadImgdbFromAssets(
+        tempFilePath:
+            '/data/user/0/com.peqas.arcorepluginexample/cache/image_database.imgdb');
+    await controller.getArCoreView();
   }
 
   void _onImageRecognized(String recImgName) {
-    print("image recongized: $recImgName");
-    _showToast("image recongized: $recImgName");
+    debugPrint('image recongized: $recImgName');
+    _showToast('image recongized: $recImgName');
 
     // you can pause the image recognition via arCoreViewController.pauseImageRecognition();
     // resume it via arCoreViewController.resumeImageRecognition();
